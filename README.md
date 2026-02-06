@@ -109,6 +109,9 @@ Now you can access you app by hitting <public_ip:80> in browser.
 
 <img width="1364" height="535" alt="image" src="https://github.com/user-attachments/assets/9870d6ae-365b-4143-a533-e0ddda99283a" />
 
+
+Note: All the 3 product images are coming from DB only so if DB down you wont get data.
+
 ## Ports to allow (check if you are using different db's)
 ```
 | Service         | Default Port | Notes                                     |
