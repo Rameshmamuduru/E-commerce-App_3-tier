@@ -3,9 +3,7 @@ version: '3.8'
 services:
 
   mysql:
-    build:
-      context: ./database
-      dockerfile: Dockerfile
+    image: mysql:8
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
