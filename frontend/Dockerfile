@@ -8,7 +8,7 @@ RUN rm -rf /usr/share/nginx/html/*
 
 # Copy your web files
 COPY . /usr/share/nginx/html
-COPY nginx/shopapp /etc/nginx/conf.d/default.conf
+COPY nginx/shopapp.conf /etc/nginx/conf.d/default.conf
 
  COPY . /var/www/html
 
