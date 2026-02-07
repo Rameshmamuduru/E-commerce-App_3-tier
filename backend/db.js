@@ -1,11 +1,17 @@
 const mysql = require("mysql2");
 
-const config = {
-  host: "mysql",          // service name from docker-compose
+const db = mysql.createPool({
+  host: "mysql",
   user: "appuser",
   password: "rootpass",
-  database: "shopdb"
-};
+  database: "shopdb",
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
+
+module.exports = db;
+
 
 function connectWithRetry() {
   const db = mysql.createConnection(config);
