@@ -7,15 +7,19 @@ async function connectWithRetry(retries = 10, delay = 3000) {
   for (let i = 0; i < retries; i++) {
     try {
       connection = mysql.createConnection({
-        host: process.env.DB_HOST || "mysql", // Docker Compose service name
+        host: process.env.DB_HOST || "mysql",
         user: process.env.DB_USER || "appuser",
         password: process.env.DB_PASSWORD || "rootpass",
         database: process.env.DB_NAME || "shopdb",
         port: process.env.DB_PORT || 3306,
       });
 
-      connection.connect((err) => {
-        if (err) throw err;
+      // Await the connection
+      await new Promise((resolve, reject) => {
+        connection.connect((err) => {
+          if (err) return reject(err);
+          resolve();
+        });
       });
 
       console.log("MySQL connected successfully!");
@@ -30,9 +34,8 @@ async function connectWithRetry(retries = 10, delay = 3000) {
   process.exit(1);
 }
 
-// Immediately start connection when module is imported
 connectWithRetry();
 
 module.exports = {
-  query: (...args) => connection.query(...args), // keep your current db.query usage
+  query: (...args) => connection.query(...args),
 };
