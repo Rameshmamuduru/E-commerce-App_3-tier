@@ -12,10 +12,10 @@ services:
       MYSQL_DATABASE: shopdb
       MYSQL_USER: appuser
       MYSQL_PASSWORD: rootpass
-    ports:
-      - "3306:3306"
     volumes:
       - sql_data:/var/lib/mysql
+    networks:
+      - backend-network
 
   backend:
     build:
@@ -26,6 +26,10 @@ services:
       - "3000:3000"
     depends_on:
       - mysql
+    env_file:
+      - ./backend/.env.prod
+    networks:
+      - backend-network
 
   frontend:
     build:
@@ -36,6 +40,12 @@ services:
       - "80:80"
     depends_on:
       - backend
+    networks:
+      - backend-network
 
 volumes:
   sql_data:
+
+networks:
+  backend-network:
+    driver: bridge
