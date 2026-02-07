@@ -1,22 +1,22 @@
-const mysql = require("mysql2");
+const mysql = require('mysql2');
 
-const db = mysql.createPool({
-  host: "mysql",          // docker service name
-  user: "appuser",
-  password: "rootpass",
-  database: "shopdb",
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+// Create DB connection using env variables
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST || 'mysql',   // <- use 'mysql', not 'localhost'
+  user: process.env.DB_USER || 'appuser',
+  password: process.env.DB_PASSWORD || 'rootpass',
+  database: process.env.DB_NAME || 'shopdb',
+  port: process.env.DB_PORT || 3306
 });
 
-// Test DB connection once on startup
-db.query("SELECT 1", (err) => {
+// Verify connection
+connection.connect((err) => {
   if (err) {
-    console.error("MySQL Connection Failed:", err);
+    console.error('MySQL connection failed:', err.message);
+    process.exit(1);  // stop backend if DB not reachable
   } else {
-    console.log("MySQL Connected");
+    console.log('MySQL connected successfully!');
   }
 });
 
-module.exports = db;
+module.exports = connection;
